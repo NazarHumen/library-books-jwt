@@ -48,6 +48,27 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+## Running with Docker
+
+The project ships with a `Dockerfile` and `docker-compose.yml` that spin up
+the Django app together with a PostgreSQL 15 container. Make sure `.env`
+exists (see `.env.example`) and that `DB_HOST=db` so the app can reach the
+database service.
+
+```bash
+docker-compose up --build
+```
+
+In a second terminal, run the initial setup inside the `web` container:
+
+```bash
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py loaddata backup.json
+```
+
+The API will be available at http://127.0.0.1:8000/api/.
+
 ## Project Structure
 
 ```
